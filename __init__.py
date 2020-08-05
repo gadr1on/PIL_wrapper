@@ -1,1 +1,1 @@
-from . import main
+from pilwrapper import main
