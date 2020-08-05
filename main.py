@@ -7,7 +7,7 @@ import textwrap
 from ImageEdit import *
 
 
-def getTrueMetrics(font,color,text):#get the true position and the the true dimension of the text 
+def getTrueMetrics(font,color,text):#get the true position and the the true dimension of the text
     imtemp=Image.new("RGB", (10, 10), "black")
     drawtemp = ImageDraw.Draw(imtemp)
     Approxlimits=drawtemp.textsize(text,font)
@@ -30,7 +30,7 @@ def paste_imageNoWrap(path,square,font,color,text,correction=True):
         correction,size=getTrueMetrics(font,color,text)
         im=simpleTextPaste(im,square,font,color,text,correction,size)
     return im
-    
+
 def GetLongestWordLength (text):
     textlist=text.split()
     longestWord=0
@@ -62,7 +62,7 @@ def firstFontEstimation(fontname,nbcar,freeSpace):
         fontsize+=1
         font = ImageFont.truetype(fontname, fontsize)
         letterArea2=font.getsize("A")
-        RealletterArea=letterArea2[0]*letterArea2[1]   
+        RealletterArea=letterArea2[0]*letterArea2[1]
     return fontsize
 
 def calibrateCarMax(font,widthMax,longestWord):
@@ -76,7 +76,7 @@ def isWrapTooTall(lines,font,fontsizeInit,heightMax):
         return True
     else:
         return False
-    
+
 def isWrapTooLarge(lines,font,fontsizeInit,WidthMax):
     wrapWidth=getWrapDimensions(lines,font,fontsizeInit)[0]
     if(wrapWidth>WidthMax):
@@ -105,15 +105,15 @@ def optimize(text,fontname,widthMax,heightMax,fontSizeinit,carlimInit):
         if(count<5):
             fontSize=NonConservativeOptimizeFontSize(text,fontname,fontSize,heightMax,carlim)
             carlim= optimizeCarLim(text,fontname,fontSize,widthMax,carlim,longestWord)
-        else:      
+        else:
             carlimNew= optimizeCarLim(text,fontname,fontSize,widthMax,carlim,longestWord)
-            fontSizeNew=ConservativeOptimizeFontSize(text,fontname,fontSize,heightMax,widthMax,carlim)  
+            fontSizeNew=ConservativeOptimizeFontSize(text,fontname,fontSize,heightMax,widthMax,carlim)
             carlim=(carlimNew+carlim)/2#avoid oscillations
             fontSize=int((fontSizeNew+fontSize)/2)
             converged=((carlimold==carlim)and(fontSizeold==fontSize))or(count==20)
         ##print(fontSize,carlim)
     return (fontSize,carlim)
-    
+
 def optimizeFontSizeAndCarLim(text,fontname,widthMax,heightMax):
     (fontSizeinit,carlimInit)=initCarAndFont(text,fontname,widthMax,heightMax)
     (fontSize,carlim)=optimize(text,fontname,widthMax,heightMax,fontSizeinit,carlimInit)
@@ -145,7 +145,7 @@ def ConservativeOptimizeFontSizeNoWrap(text,fontname,fontsize,heightMax,widthMax
             TooTall=limits[1]>heightMax
             TooBig=TooTall or TooLarge
         return fontsize-1
-    
+
 def ConservativeOptimizeFontSize(text,fontname,fontsizeInit,heightMax,widthMax,carMax):
     font = ImageFont.truetype(fontname, fontsizeInit)
     lines = textwrap.wrap(text, width = carMax)
@@ -187,7 +187,7 @@ def NonConservativeOptimizeFontSize(text,fontname,fontsizeInit,heightMax,carMax)
             font = ImageFont.truetype(fontname, fontsize)
             TooTall=isWrapTooTall(lines,font,fontsize,heightMax)
         return fontsize-1
-          
+
 def optimizeCarLim(text,fontName,fontsize,widthMax,carMaxInit,longestWord):
     font = ImageFont.truetype(fontName, fontsize)
     lines = textwrap.wrap(text, width = carMaxInit)
@@ -216,7 +216,7 @@ def findBestFontSize(square,text,fontName,multiline):
     fontSize=12
     toobig=False
     font = ImageFont.truetype(fontName, fontSize)
-    if (multiline=="false"):     
+    if (multiline=="false"):
         while not toobig:
             limits=font.getsize(text)
             if((limits[0]>widthLimit)or(limits[1]>heightLimit)):
@@ -242,6 +242,3 @@ def findBestFontSize(square,text,fontName,multiline):
                 font = ImageFont.truetype(fontName, fontSize)
         print(carLim,len(lines),fontHeight,wrapHeight,fontSize-1)
         return ImageFont.truetype(fontName, fontSize-1),carlimprec
-
-
-    
