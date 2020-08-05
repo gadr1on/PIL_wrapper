@@ -1,12 +1,12 @@
-# SupperWrapper
-###description
+# PIL Wrapper
+### Description
 PIL + textwrap is great to print a text on an image.   
 But if one wants the max font size to fit a limited printing box, things are getting harder.
 This module allow a modest workaround to fix these two issues :
 - carLim and FontSize optimization when width and height are given   
 - draw.text printing outside the expected box (it happens when font metrics are messed up)
 
-###use
+### Use
 To find the best fontSize and carlim
 ``` python
 import superWrapper
@@ -21,11 +21,6 @@ x_remaining=w-size[0]
 y_remaining=h-size[1]
 draw.text((x + x_remaining/2 + correction[0], y+y_remaining/2 + correction[1]), text, fill=color, font=font)
 ```
-###dependancies
+### Dependancies
 - PIL
 - ImageEdit
-
-###More
-Don't hesitate to fork or/and suggest a better solution.
-more informations there http://brunomart.in/blog/?p=14
-
