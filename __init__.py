@@ -1,1 +1,1 @@
-from pilwrapper import main
+from gadrionwrap import main
